@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "770277834375",
+    "project_id": "mlkitcloudapi",
+    "storage_bucket": "mlkitcloudapi.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:770277834375:android:f12dd9fd405102c6e24222",
+        "android_client_info": {
+          "package_name": "com.example.mlkitcloudapi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "770277834375-52m9dlee8kl6gcqk1v1vi4mpc8j8nkdu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFLkaEXDz9w0bT__tnz23e4q5e1FerR90"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "770277834375-52m9dlee8kl6gcqk1v1vi4mpc8j8nkdu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
