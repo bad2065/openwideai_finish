@@ -29,12 +29,14 @@ import android.media.Image;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
+import android.speech.tts.TextToSpeech;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     private final String[] REQUIRED_PERMISSIONS = new String[]{"android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE"};
     private Executor executor = Executors.newSingleThreadExecutor();
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
+    private TextToSpeech tts;
 
     PreviewView mPreviewView;
     SurfaceHolder holder;
@@ -72,6 +75,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     Canvas canvas;
     Paint paint;
     TextView textView;
+    Button btnStopVoice;
+    Boolean ttsEnabled;
     int cameraHeight, cameraWidth, xOffset, yOffset, boxWidth, boxHeight;
 
 //    ImageView captureImage;
@@ -90,6 +95,8 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 //        } else{
 //            ActivityCompat.requestPermissions(this, REQUIRED_PERMISSIONS, REQUEST_CODE_PERMISSIONS);
 //        }
+
+        btnStopVoice = findViewById(R.id.btnStopVoice);
 
         surfaceView = findViewById(R.id.overlay);
         surfaceView.setZOrderOnTop(true);
@@ -282,6 +289,55 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                                 textView = findViewById(R.id.text);
                                 String text = firebaseVisionText.getText();
                                 textView.setText(text);
+                                tts = new TextToSpeech(getBaseContext(), new TextToSpeech.OnInitListener() {
+                                    @Override
+                                    public void onInit(int status) {
+                                        if(status == TextToSpeech.SUCCESS){
+                                            if(tts.isLanguageAvailable(new Locale(Locale.getDefault().getLanguage()))
+                                                    == TextToSpeech.LANG_AVAILABLE){
+                                                tts.setLanguage(new Locale(Locale.getDefault().getLanguage()));
+                                            }
+                                            else{
+                                                tts.setLanguage(Locale.US);
+                                            }
+                                            tts.setPitch(1.3f);
+                                            tts.setSpeechRate(0.7f);
+                                            ttsEnabled = true;
+                                        }
+                                        else if(status == TextToSpeech.ERROR){
+                                            Toast.makeText(MainActivity.this, "Speech Error", Toast.LENGTH_SHORT).show();
+                                            ttsEnabled = false;
+                                        }
+                                    }
+
+                                });
+
+                                textView.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                            tts.speak(text, TextToSpeech.QUEUE_FLUSH, null);
+                                    }
+                                });
+
+                                btnStopVoice.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        if(tts.isSpeaking()){
+                                            tts.stop();
+                                            //tts.shutdown();
+                                        }
+                                    }
+                                });
+//                                textView.setOnLongClickListener(new View.OnLongClickListener() {
+//                                    @Override
+//                                    public boolean onLongClick(View v) {
+//                                        if(tts.isSpeaking()){
+//                                            tts.stop();
+//                                            tts.shutdown();
+//                                        }
+//                                        return true;
+//                                    }
+//                                });
 
                                 for (FirebaseVisionText.TextBlock block : firebaseVisionText.getTextBlocks()) {
                                     String blockText = block.getText();
@@ -348,6 +404,15 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 //                });
 //            }
 //        });
+    }
+
+    @Override
+    protected void onPause() {
+        if(tts != null || tts.isSpeaking()){
+            tts.stop();
+            //tts.shutdown();
+        }
+        super.onPause();
     }
 
     public String getBatchDirectoryName() {
