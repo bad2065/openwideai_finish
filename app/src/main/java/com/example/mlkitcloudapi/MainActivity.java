@@ -167,9 +167,9 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
         paint.setColor(color);
         paint.setStrokeWidth(5);
 
-        left = width / 2 - diameter / 3;
+        left = width / 2 - diameter / 2;
         top = height / 2 - diameter / 3;
-        right = width / 2 + diameter / 3;
+        right = width / 2 + diameter / 2;
         bottom = height / 2 + diameter / 3;
 
         xOffset = left;
@@ -284,15 +284,15 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
                 diameter -= offset;
 
 
-                left = width / 2 - diameter / 3;
+                left = width / 2 - diameter / 2;
                 top = height / 2 - diameter / 3;
-                right = width / 2 + diameter / 3;
+                right = width / 2 + diameter / 2;
                 bottom = height / 2 + diameter / 3;
 
                 xOffset = left;
                 yOffset = top;
 
-                Bitmap bitmap = Bitmap.createBitmap(bmp, left, top, boxWidth, boxHeight);
+                Bitmap bitmap = Bitmap.createBitmap(bmp, left, top, right, bottom);
 
                 FirebaseVisionCloudTextRecognizerOptions options =
                         new FirebaseVisionCloudTextRecognizerOptions.Builder()
