@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MlKitCloudApi</string>
+    <string name="preview_area">preview area</string>
+    <string name="capture">capture</string>
 </resources>
