@@ -78,9 +78,6 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
     Boolean ttsEnabled;
     int cameraHeight, cameraWidth, xOffset, yOffset, boxWidth, boxHeight;
 
-//    ImageView captureImage;
-//    TextView tvTextFromCamera;
-    // some changes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
