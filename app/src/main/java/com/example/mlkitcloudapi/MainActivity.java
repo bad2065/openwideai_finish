@@ -80,6 +80,7 @@ public class MainActivity extends AppCompatActivity implements SurfaceHolder.Cal
 
 //    ImageView captureImage;
 //    TextView tvTextFromCamera;
+    // some changes
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
